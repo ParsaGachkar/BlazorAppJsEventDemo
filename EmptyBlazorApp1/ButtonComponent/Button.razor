@@ -1,0 +1,24 @@
+﻿@inject IJSRuntime JS
+
+<div @ref="myButton" class="btn btn-primary">Button</div>
+
+@code {
+    public ElementReference myButton;
+    private IJSObjectReference? module;
+    [Parameter]
+    public EventCallback OnClicked { get; set; }
+    [Parameter]
+    public string Name{ get; set; }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        module = await JS.InvokeAsync<IJSObjectReference>("import", "./Button.js");
+        await module.InvokeVoidAsync("registerOnClick", DotNetObjectReference.Create(this), myButton);
+    }
+
+    [JSInvokable]
+    public void Clicked()
+    {
+        Console.WriteLine(Name);
+        OnClicked.InvokeAsync();
+    }
+}

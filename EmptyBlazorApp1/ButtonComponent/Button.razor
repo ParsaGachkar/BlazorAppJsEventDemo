@@ -11,7 +11,7 @@
     public string Name{ get; set; }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        module = await JS.InvokeAsync<IJSObjectReference>("import", "./Button.js");
+        module = await JS.InvokeAsync<IJSObjectReference>("import", "./ButtonComponent/Button.razor.js");
         await module.InvokeVoidAsync("registerOnClick", DotNetObjectReference.Create(this), myButton);
     }
 
